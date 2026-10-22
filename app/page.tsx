@@ -1,22 +1,51 @@
+import Image from "next/image";
 import { SiteFooter } from "@/components/copper/site-footer";
 import { SiteHeader } from "@/components/copper/site-header";
+import { Button } from "@/components/ui/button";
+import { getProducts } from "@/lib/copper/catalog";
+
+const heroAlt: Record<string, string> = {
+  "copper-home": "Copper Home smart speaker",
+  "copper-notes": "Copper Notes pocket recorder",
+};
 
 export default function Home() {
+  const products = getProducts();
+
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center gap-6 px-4 py-16 text-center">
-        <h1 className="text-4xl font-bold">Copper State Labs</h1>
-        <p className="text-muted-foreground text-lg">
-          Our new site is under construction.
-        </p>
-        {/* MODULE 0: change this line */}
-        <p
-          data-testid="week-0-line"
-          className="bg-secondary text-secondary-foreground rounded-lg px-4 py-2"
+      <main className="flex-1">
+        <section
+          data-testid="hero"
+          id="top"
+          className="bg-secondary text-secondary-foreground"
         >
-          Week 0 check-in: The Copper State Labs app is set up and live.
-        </p>
+          <div className="mx-auto grid max-w-5xl items-center gap-10 px-4 py-16 md:grid-cols-2 md:py-24">
+            <div className="flex flex-col items-start gap-6">
+              <h1 className="text-4xl font-bold md:text-5xl">
+                Raw ideas, refined into answers you can trust.
+              </h1>
+              <p className="text-lg">From raw ideas to refined answers.</p>
+              <Button asChild size="lg">
+                <a href="#products">See products</a>
+              </Button>
+            </div>
+            <div className="grid grid-cols-2 items-end gap-4">
+              {products.map((product) => (
+                <Image
+                  key={product.id}
+                  src={product.cutout}
+                  alt={heroAlt[product.id] ?? product.name}
+                  width={600}
+                  height={600}
+                  priority
+                  className="h-auto w-full"
+                />
+              ))}
+            </div>
+          </div>
+        </section>
       </main>
       <SiteFooter />
     </>
